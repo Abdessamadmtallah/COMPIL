@@ -1,0 +1,49 @@
+// Grammaire MiniPython pour Lark
+start: statement*
+
+statement: decl
+         | assign
+         | while_stmt
+         | if_stmt
+         | print_stmt
+
+// Déclarations
+decl: "int" var_list ";"
+var_list: CNAME ("," CNAME)*
+
+// Assignations
+assign: CNAME "=" expr ";"
+
+// Expressions
+?expr: term
+     | expr "+" term -> add
+     | expr "-" term -> sub
+
+?term: factor
+     | term "*" factor -> mul
+     | term "/" factor -> div
+
+?factor: NUMBER
+       | CNAME
+       | "(" expr ")"
+
+// Structures de contrôle
+while_stmt: "while" "(" condition ")" "{" statement* "}"
+if_stmt: "if" "(" condition ")" "{" statement* "}" ("else" "{" statement* "}")?
+
+// Conditions
+?condition: expr comparison_op expr -> compare
+
+comparison_op: "==" -> eq
+             | "!=" -> ne
+             | "<" -> lt
+             | ">" -> gt
+
+// Affichage
+print_stmt: "print" "(" CNAME ")" ";"
+
+// Tokens
+%import common.CNAME
+%import common.NUMBER
+%import common.WS
+%ignore WS

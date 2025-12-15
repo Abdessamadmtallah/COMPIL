@@ -1,0 +1,17 @@
+int x, y;
+float a;
+
+x = 5;
+y = 10;
+
+print(x);
+print(y);
+
+if (x < y) {
+    print(1);
+}
+
+while (x < 8) {
+    print(x);
+    x = x + 1;
+}
